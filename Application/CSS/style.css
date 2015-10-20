@@ -1,0 +1,21 @@
+body{
+    font-family:"Trebuchet MS", Helvetica, sans-serif;
+}
+
+h2{
+    margin-bottom:0;
+}
+
+p {
+    margin-bottom:0;
+}
+
+.PostTextBlock{
+    display:block;
+    margin-bottom:5px;
+}
+
+.StoryTitle {
+    font-size:22px;
+}
+
