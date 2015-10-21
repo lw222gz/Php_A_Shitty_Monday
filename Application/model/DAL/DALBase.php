@@ -10,7 +10,6 @@ class DALBase{
         if($this -> SQLconn -> connect_error){
             die("Connection failed". $this -> SQLconn -> connect_error);
         }
-
         return $this -> SQLconn;
     }
 }
