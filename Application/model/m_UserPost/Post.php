@@ -5,12 +5,14 @@ class Post{
     private $Title;
     private $Story;
     private $DateCreated;
+    private $imgPath;
     
-    public function __construct($Creator, $Title, $Story, $DateCreated){
+    public function __construct($Creator, $Title, $Story, $DateCreated, $imgPath){
         $this -> Creator = $Creator;
         $this -> Title = $Title;
         $this -> Story = $Story;
         $this -> DateCreated = $DateCreated;
+        $this -> imgPath = $imgPath;
     }
     
     public function getCreator(){
@@ -27,5 +29,9 @@ class Post{
     
     public function getTitle(){
         return $this -> Title;
+    }
+    
+    public function getImgPath(){
+        return $this -> imgPath;
     }
 }

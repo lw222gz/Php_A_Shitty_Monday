@@ -12,26 +12,10 @@ class PostController {
     }
     
     public function AddPost(){
-        //TESTING
-        var_dump($this -> psV -> getImg());
-        $img = $this -> psV -> getImg();
         
-        $uploaddir = '../Data/';
-        $uploadfile = $uploaddir . basename($img['name']);
+        $this -> psM -> addNewPost($this -> sm -> getUserNameSession(), $this -> psV -> getTitle(), $this -> psV -> getStory(), $this -> psV -> getImg());
         
-        if (move_uploaded_file($img['tmp_name'], $uploadfile)) {
-            echo "File is valid, and was successfully uploaded.\n";
-        } else {
-            echo "Possible file upload attack!\n";
-        }
-        move_uploaded_file($img["tmp_name"],
-          $uploaddir.$img["name"]);
-          
-        //TESTING
-        
-        $this -> psM -> addNewPost($this -> sm -> getUserNameSession(), $this -> psV -> getTitle(), $this -> psV -> getStory());
-        
-        //header("Location: ?");
+        header("Location: ?");
     }
     
     public function getAllPosts(){

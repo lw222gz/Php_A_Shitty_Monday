@@ -11,14 +11,18 @@ class PostsDAL {
     }
         
     //Adds a new post to the DB, returns true if successful, if it fails it returns false.
-    public function AddNewPostToDB($user, $title, $story){
+    public function AddNewPostToDB($user, $title, $story, $imgPath){
         //get todays date
         $date = date('Y-m-d H:i:s');
         
         $conn = $this -> DALb -> getSQLConn();
         
         //$conn -> real_escape_string() allows the ' sign commonly used in english, otherwise the DB will complain
-        $query = "INSERT INTO `Posts`(`Creator`, `Title`, `Message`, `DatePosted`) VALUES ('".$conn -> real_escape_string($user)."','" .$conn-> real_escape_string($title). "','".$conn->real_escape_string($story)."','$date')"; 
+        $query = "INSERT INTO `Posts`(`Creator`, `Title`, `Message`, `DatePosted`, `ImagePath`) VALUES ('".$conn -> real_escape_string($user)."',
+                                                                                                        '" .$conn-> real_escape_string($title). "',
+                                                                                                        '".$conn->real_escape_string($story)."',
+                                                                                                        '$date',
+                                                                                                        '".$conn -> real_escape_string($imgPath)."')"; 
 
         //$result = mysqli_quesry($conn, $query);
         $result = $conn -> query($query);
@@ -41,7 +45,7 @@ class PostsDAL {
         $this -> Posts = array();
         $conn = $this -> DALb -> getSQLConn();
         
-        $query = "SELECT `Creator`, `Title`, `Message`, `DatePosted` FROM `Posts` ORDER BY `DatePosted` DESC";
+        $query = "SELECT `Creator`, `Title`, `Message`, `DatePosted`, `ImagePath` FROM `Posts` ORDER BY `DatePosted` DESC";
         
         $result = $conn -> query($query);
         
@@ -53,7 +57,7 @@ class PostsDAL {
         if ($result->num_rows > 0) {
             //creates a new Post for each line in the Posts table
             while($row = $result->fetch_assoc()) {
-                array_push($this -> Posts, new Post($row["Creator"], $row["Title"], $row["Message"], $row["DatePosted"]));
+                array_push($this -> Posts, new Post($row["Creator"], $row["Title"], $row["Message"], $row["DatePosted"], $row["ImagePath"]));
             }
         } 
         
@@ -63,7 +67,9 @@ class PostsDAL {
     }
     
     //removes week old posts, returns the status of the query, true if it was successful, otherwise false.
+    //TODO: a more efficient place to run this code less frequently?
     public function removeOldPosts(){
+        //TODO: remove images that dont have a url in the DB
         $conn = $this -> DALb -> getSQLConn();
         
         //removes week old posts

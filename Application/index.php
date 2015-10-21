@@ -4,8 +4,6 @@
 //sessions in it's constructor and the instance of the class is created here in index
 session_start();
 
-
-
 //INCLUDE THE FILES NEEDED...
 require_once('Settings.php');
 require_once('view/LoginView.php');
@@ -28,7 +26,10 @@ require_once('model/DAL/DALBase.php');
 require_once('model/DAL/PostsDAL.php');
 require_once('model/DAL/UserDAL.php');
 
-
+//TODO on live version:
+//-remove error reporting.
+//-change url in Settings script.
+//-change header location in Logincontroller and Postcontroller.
 
 //MAKE SURE ERRORS ARE SHOWN... MIGHT WANT TO TURN THIS OFF ON A PUBLIC SERVER
 error_reporting(E_ALL);

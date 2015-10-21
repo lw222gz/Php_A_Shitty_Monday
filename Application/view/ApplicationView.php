@@ -1,5 +1,7 @@
 <?php
 
+
+
 class ApplicationView{
     
     private $PostView;
@@ -21,13 +23,23 @@ class ApplicationView{
         return $ret;
     }
     
+    //$actual_link = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+    
     //returns html of all posts in the $Posts array
     private function getAllPosts(){
         $ret = "";
         //Loopar igenom $Posts och skapar HTML för varje post. 
         foreach ($this -> Posts as $post){
             $ret .= "<fieldset><p><b class='StoryTitle'>" . strtoupper($post -> getTitle()) . "</b><br/>Written by: ". $post -> getCreator(). " At date: " . $post -> getDateCreated() . "
-            <br/><h2>Story:</h2> " . str_replace("\n", "<br/>", $post -> getStory()) . "<br/></p></fieldset>";
+            <br/><h2>Story:</h2> " . str_replace("\n", "<br/>", $post -> getStory()) . "<br/>";
+            if($post -> getImgPath() != null){
+                //TODO: change on live verson.
+                
+                //$ret .= "<img src=https://php-a-shitty-monday-lw222gz-1-1.c9.io/Application/". $post->getImgPath() . ">";
+                $ret .= "<img src=" . Settings::$url.$post->getImgPath() ." >";
+            }
+            
+            $ret .= "</p></fieldset>";
         }
         return $ret;
     }

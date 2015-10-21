@@ -53,12 +53,9 @@ class PostStatusView {
         return false;
     }
     
-    
+    //this function dont need if(isset...)) because $_FILES allways returns an array
     public function getImg(){
-        if(isset($_FILES[self::$FileID])){
-            return $_FILES[self::$FileID];
-        }
-        return null;
+        return $_FILES[self::$FileID];
     }
     //returns the story written in the textarea
     public function getStory(){
