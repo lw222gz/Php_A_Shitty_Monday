@@ -92,14 +92,14 @@ class LoginView {
 
 					<label for="' . self::$password . '">Password :</label>
 					<input type="password" id="' . self::$password . '" name="' . self::$password . '" />
-
-					<label for="' . self::$keep . '">Keep me logged in  :</label>
-					<input type="checkbox" id="' . self::$keep . '" name="' . self::$keep . '" />
 					
 					<input type="submit" name="' . self::$login . '" value="login" />
 				</fieldset>
 			</form>
 		';
+		/*<label for="' . self::$keep . '">Keep me logged in  :</label>
+		<input type="checkbox" id="' . self::$keep . '" name="' . self::$keep . '" />*/
+					
 	}
 
 	

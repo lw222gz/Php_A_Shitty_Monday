@@ -58,4 +58,3 @@ $MC = new MasterController($PostCont, $loginCont, $v, $rv, $PostView, $sm, $AppV
 $MC -> init();
 
 $lv->render($sm -> getLoggedInSession(), $v, $rv);
-
