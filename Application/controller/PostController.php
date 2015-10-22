@@ -1,25 +1,26 @@
 <?php
 
 class PostController {
-    private $psV; //PostStatusView
-    private $psM; //PostStatusModel
-    private $sm; //sessionmanipulator
+    private $postStatusView; 
+    private $postStatusModel; 
+    private $sessionManager; 
     
-    public function __construct($psV, $psM, $sm){
-        $this -> psV = $psV;
-        $this -> psM = $psM;
-        $this -> sm = $sm;
+    public function __construct($postStatusView, $postStatusModel, $sessionManager){
+        $this -> postStatusView = $postStatusView;
+        $this -> postStatusModel = $postStatusModel;
+        $this -> sessionManager = $sessionManager;
     }
     
     public function AddPost(){
-        
-        $this -> psM -> addNewPost($this -> sm -> getUserNameSession(), $this -> psV -> getTitle(), $this -> psV -> getStory(), $this -> psV -> getImg());
+        $this -> postStatusModel -> addNewPost($this -> sessionManager -> getUserNameSession(), 
+                                                $this -> postStatusView -> getTitle(), 
+                                                $this -> postStatusView -> getStory(), 
+                                                $this -> postStatusView -> getImg());
         
         header("Location: ?");
     }
     
     public function getAllPosts(){
-        
-        return $this -> psM -> getAllPosts();
+        return $this -> postStatusModel -> getAllPosts();
     }
 }

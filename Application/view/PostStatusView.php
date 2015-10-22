@@ -18,7 +18,6 @@ class PostStatusView {
         //TODO: add upload image option
         return '<form method="post" enctype="multipart/form-data"> 
 				<fieldset>
-                    
                     <p id="' . self::$ErrorMessID . '">' . $this -> errorMessage . '</p>
                     
                     <p><label for="' . self::$Title . '">Title of story(max 50 characters): </label>

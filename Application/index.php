@@ -12,9 +12,10 @@ require_once('view/RegisterView.php');
 require_once('view/ApplicationView.php');
 require_once('view/PostStatusView.php');
 
-require_once('controller/LoginController.php');
-require_once('controller/PostController.php');
 require_once('controller/MasterController.php');
+require_once('controller/LoginController.php');
+require_once('controller/RegisterController.php');
+require_once('controller/PostController.php');
 
 require_once('model/SessionManager.php');
 require_once('model/m_Login/LoginModel.php');
@@ -52,10 +53,17 @@ $v = new LoginView($lm, $AppV, $sm);
 $rv = new RegisterView();
 $lv = new LayoutView();
 
-$loginCont = new LoginController($v, $lm, $rv, $rm, $sm);
+$registerCont = new RegisterController($rv, $rm, $sm);
+$loginCont = new LoginController($v, $lm);
 $PostCont = new PostController($PostView, $psM, $sm);
-$MC = new MasterController($PostCont, $loginCont, $v, $rv, $PostView, $sm, $AppV);
+$MC = new MasterController($PostCont, $loginCont, $registerCont, $v, $rv, $PostView, $sm, $AppV);
 
 $MC -> init();
 
 $lv->render($sm -> getLoggedInSession(), $v, $rv);
+
+$temp = explode('.', "Emu1.jpg");
+$extension = array_pop($temp);
+$name = implode('.', $temp);
+
+echo substr($name, 0, -1);

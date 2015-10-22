@@ -4,6 +4,7 @@ class PostStatusModel{
     //Note: this class feels useless, move it's responsibilities to PostDAL instead?
     
     private $pDAL; //PostsDAL
+    private $ImageNameModifier;
     
     private $filePath;
     
@@ -67,8 +68,17 @@ class PostStatusModel{
                 mime_content_type($img['tmp_name']) == "image/vnd.microsoft.icon" ||
                 mime_content_type($img['tmp_name']) == "image/tiff" ||
                 mime_content_type($img['tmp_name']) == "image/svg+xml"){
-                //TODO: Check for smiliar file names, otherwise the files will overwrite eachother.
-                //if it's a valid image then a file path is created. Later used to save the file after a successful DB entry of the status
+                
+                
+                $temp = explode('.', $img['name']);
+                $extension = array_pop($temp);
+                $OrgLength = strlen(implode('.', $temp));
+                
+                $this -> ImageNameModifier = 0;
+                //returns the same name if the name does not exist. Otherwise it returns a name with a unieuq modifier
+                $img['name'] = self::DoesFileNameExist($img['name'], $OrgLength);
+                
+                //After being verified as an image and having a unique name a filePath to it is created, later used to save the image after a successful DB entry of the post data
                 $this -> filePath = Settings::$uploadDir.basename($img['name']);
             }
             else{
@@ -79,42 +89,31 @@ class PostStatusModel{
         return true;
     }
     
+    //checks if a file name exists and if it does it changes it to a new unique one and returns it.
+    public function DoesFileNameExist($imgName, $OrgLength){
+        foreach (scandir(Settings::$uploadDir) as $ExistingFileName){
+            if($imgName == $ExistingFileName){
+                
+                $this -> ImageNameModifier++;
+                
+                //splits the name up with the extension to later reassemble all parts with a modifier
+                $temp = explode('.', $imgName);
+                $extension = array_pop($temp);
+                $name = implode('.', $temp);
+                    
+                //removes any current modifier to add a new one.
+                $name = substr_replace($name, "", $OrgLength);
+                
+                //sets up a new name to test agian.
+                $newName = $name.$this->ImageNameModifier.".".$extension;
+                
+                $imgName = self::DoesFileNameExist($newName, $OrgLength);
+                break;
+            }
+        }
+        return $imgName;
+    }
+    
 }
 
 class PostStoryError extends Exception{}
-
-
-/*
-//TESTING
-        var_dump($this -> psV -> getImg());
-        $img = $this -> psV -> getImg();
-        
-        if($img['size'] == 0){
-            echo "no image uplaoded";
-        }
-        else{
-            $uploaddir = '../Images/';
-            $uploadfile = $uploaddir . basename($img['name']);
-            
-            if(mime_content_type($img['tmp_name']) == "image/jpeg"){
-                echo "file is valid and was uploaded";
-                move_uploaded_file($img["tmp_name"],
-                $uploaddir.$img["name"]);
-            }
-            else{
-                echo "File contents could be harmful, it was not uploaded.";
-            }
-            
-        }
-        
-        
-        /*if (move_uploaded_file($img['tmp_name'], $uploadfile)) {
-            echo "File is valid, and was successfully uploaded.\n";
-        } else {
-            echo "Possible file upload attack!\n";
-        }*/
-        
-          
-        
-          
-        //TESTING*/
