@@ -5,7 +5,6 @@ class UserDAL {
     private $DALb;
     private $Users;
     
-    
     public function __construct($DALb){
         $this -> DALb = $DALb;
     }

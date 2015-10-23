@@ -41,7 +41,6 @@ $DALb = new DALBase();
 $UDAL = new UserDAL($DALb);
 $pDAL = new PostsDAL($DALb);
 
-
 $psM = new PostStatusModel($pDAL);
 $sm = new SessionManager();
 $lm = new LoginModel($UDAL, $sm);
@@ -62,8 +61,4 @@ $MC -> init();
 
 $lv->render($sm -> getLoggedInSession(), $v, $rv);
 
-$temp = explode('.', "Emu1.jpg");
-$extension = array_pop($temp);
-$name = implode('.', $temp);
 
-echo substr($name, 0, -1);

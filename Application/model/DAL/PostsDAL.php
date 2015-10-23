@@ -3,6 +3,7 @@
 class PostsDAL {
     private $DALb; //DALBase
     private $Posts;
+
     
     //sets the timezone for the AddNewPostMethod
     public function __construct($DALb){
@@ -23,8 +24,6 @@ class PostsDAL {
                                                                                                         '".$conn->real_escape_string($story)."',
                                                                                                         '$date',
                                                                                                         '".$conn -> real_escape_string($imgPath)."')"; 
-
-        //$result = mysqli_quesry($conn, $query);
         $result = $conn -> query($query);
 
         mysqli_close($conn);
@@ -35,7 +34,7 @@ class PostsDAL {
     
     //Calls the removeOldPosts function, then it gets all current posts and returns it as an array with Post objects. If eighter of the query's fails
     //it returns false
-    public function getAllPosts(){
+    public function getAllPosts($postStatusModel){
         
         //TODO: anyway to call this function daily?
         if(!self::removeOldPosts()){
@@ -59,6 +58,9 @@ class PostsDAL {
             while($row = $result->fetch_assoc()) {
                 array_push($this -> Posts, new Post($row["Creator"], $row["Title"], $row["Message"], $row["DatePosted"], $row["ImagePath"]));
             }
+            
+            //removes any pictures that dont have a path linked to them.
+            $postStatusModel -> deleteOldPictures($this -> Posts);
         } 
         
         $conn->close();

@@ -4,7 +4,7 @@ class PostStatusModel{
     //Note: this class feels useless, move it's responsibilities to PostDAL instead?
     
     private $pDAL; //PostsDAL
-    private $ImageNameModifier;
+    private $ImageModifier;
     
     private $filePath;
     
@@ -30,7 +30,7 @@ class PostStatusModel{
     //returns all posts, if something goes wrong an error is thrown
     public function getAllPosts(){
         //returns an array with all posts sorted by date
-        $result = $this -> pDAL -> getAllPosts();
+        $result = $this -> pDAL -> getAllPosts($this);
         if(!$result){
             throw new PostStoryError("Error occured when trying to get current posts.");
         }
@@ -74,9 +74,9 @@ class PostStatusModel{
                 $extension = array_pop($temp);
                 $OrgLength = strlen(implode('.', $temp));
                 
-                $this -> ImageNameModifier = 0;
+                $this -> ImageModifier = 0;
                 //returns the same name if the name does not exist. Otherwise it returns a name with a unieuq modifier
-                $img['name'] = self::DoesFileNameExist($img['name'], $OrgLength);
+                $img['name'] = self::ImageNameModifier($img['name'], $OrgLength);
                 
                 //After being verified as an image and having a unique name a filePath to it is created, later used to save the image after a successful DB entry of the post data
                 $this -> filePath = Settings::$uploadDir.basename($img['name']);
@@ -90,11 +90,11 @@ class PostStatusModel{
     }
     
     //checks if a file name exists and if it does it changes it to a new unique one and returns it.
-    public function DoesFileNameExist($imgName, $OrgLength){
+    public function ImageNameModifier($imgName, $OrgLength){
         foreach (scandir(Settings::$uploadDir) as $ExistingFileName){
             if($imgName == $ExistingFileName){
                 
-                $this -> ImageNameModifier++;
+                $this -> ImageModifier++;
                 
                 //splits the name up with the extension to later reassemble all parts with a modifier
                 $temp = explode('.', $imgName);
@@ -105,13 +105,37 @@ class PostStatusModel{
                 $name = substr_replace($name, "", $OrgLength);
                 
                 //sets up a new name to test agian.
-                $newName = $name.$this->ImageNameModifier.".".$extension;
+                $newName = $name.$this->ImageModifier.".".$extension;
                 
-                $imgName = self::DoesFileNameExist($newName, $OrgLength);
+                $imgName = self::ImageNameModifier($newName, $OrgLength);
                 break;
             }
         }
         return $imgName;
+    }
+    
+    
+    
+    //removes all images that dont have a path in the Posts array
+    public function deleteOldPictures($Posts){
+        foreach (scandir(Settings::$uploadDir) as $ExistingFileName){
+            //this if avoids the removal of the hidden directories "." and ".."
+            if (is_dir($ExistingFileName)){
+                continue;
+            }
+                
+            $pathDoesExsist = false;
+            foreach ($Posts as $post){
+                if(Settings::$uploadDir.$ExistingFileName == $post -> getImgPath()){
+                    $pathDoesExsist = true;
+                    break;
+                }
+            }
+            
+            if(!$pathDoesExsist){
+                unlink(Settings::$uploadDir.$ExistingFileName);
+            }
+        }
     }
     
 }
