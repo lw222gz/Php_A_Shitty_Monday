@@ -5,6 +5,7 @@ class SessionManager {
     private static $LoggedInUserID = "SessionHandler::LoggedInUser";
     private static $IsLoggedInID = "SessionHandler::IsLoggedIn";
     private static $newUserID = "SessionHandler::newUserName";
+    private static $VerifySessionID = "SessionHandler::verificationStatus";
     
 
     public function __construct(){
@@ -13,7 +14,10 @@ class SessionManager {
             self::setUserNameSession("");
         }
         if(!isset($_SESSION[self::$IsLoggedInID])){
-            self::setLoggedInSession(false);
+            self::setLoggedInSessionFalse();
+        }
+        if(!isset($_SESSION[self::$VerifySessionID])){
+            self::setVerifySessionFail();
         }
         //$_SESSION[$newUserID] dont need to be set to default because if it gets set, then it's used, when it later on used it's re-unset.
     }
@@ -26,7 +30,7 @@ class SessionManager {
     //sets value of $UserName Session
     public function setUserNameSession($value){
         if(!is_string($value)){
-            throw new SessionException("Value is not valid.");
+            throw new Exception("Value is not valid.");
         }
         $_SESSION[self::$LoggedInUserID] = $value;
     }
@@ -37,11 +41,11 @@ class SessionManager {
     }
     
     //sets the value of $IsLoggedIn session 
-    public function setLoggedInSession($value){
-        if(!is_bool($value)){
-            throw new SessionException("Value is not valid.");
-        }
-        $_SESSION[self::$IsLoggedInID] = $value;
+    public function setLoggedInSessionFalse(){
+        $_SESSION[self::$IsLoggedInID] = EnumStatus::$boolFalse;
+    }
+    public function setLoggedInSessionTrue(){
+        $_SESSION[self::$IsLoggedInID] = EnumStatus::$boolTrue;
     }
     
     //returns the value of $newUsedID session and unsets the value.
@@ -55,7 +59,7 @@ class SessionManager {
     //sets a value to session $newUserID
     public function setNewUserSession($value){
         if(!is_string($value)){
-            throw new SessionException("Value is not valid.");
+            throw new Exception("Value is not valid.");
         }
         $_SESSION[self::$newUserID] = $value;
     }
@@ -67,6 +71,18 @@ class SessionManager {
         }
         return false;
     }
+    
+    
+    public function setVerifySessionFail(){
+        $_SESSION[self::$VerifySessionID] = EnumStatus::$failVerification;
+    }
+    public function setVerifySessionsuccessful(){
+        $_SESSION[self::$VerifySessionID] = EnumStatus::$successfulVerification;
+    }
+    public function setVerifySessionAlreadyActive(){
+        $_SESSION[self::$VerifySessionID] = EnumStatus::$alreadyActiveVerification;
+    }
+    public function getVerifySession(){
+        return $_SESSION[self::$VerifySessionID];
+    }
 }
-
-class SessionException extends Exception{}

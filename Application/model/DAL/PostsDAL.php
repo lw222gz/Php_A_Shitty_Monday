@@ -1,5 +1,6 @@
 <?php
 
+//talks to the Posts table in the DB
 class PostsDAL {
     private $DALb; //DALBase
     private $Posts;

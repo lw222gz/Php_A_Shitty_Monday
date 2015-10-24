@@ -10,8 +10,10 @@ class MasterController{
     private $postStatusView; 
     private $sessionManager; 
     private $appV;
+    private $verifyView;
+    private $layoutView;
     
-    public function __construct($PostCont, $LoginCont, $registerCont, $loginView, $registerView, $postStatusView, $sessionManager, $appV){
+    public function __construct($PostCont, $LoginCont, $registerCont, $loginView, $registerView, $postStatusView, $sessionManager, $appV, $verifyView, $layoutView){
         $this -> PostCont = $PostCont;
         $this -> LoginCont = $LoginCont;
         $this -> registerCont = $registerCont;
@@ -20,10 +22,13 @@ class MasterController{
         $this -> postStatusView = $postStatusView;
         $this -> sessionManager = $sessionManager;
         $this -> appV = $appV;
+        $this -> verifyView = $verifyView;
+        $this -> layoutView = $layoutView;
     }
     
     
     public function init(){
+        
         try 
         {
             if($this -> registerView -> hasPressedRegister()){
@@ -42,7 +47,7 @@ class MasterController{
                 $this -> PostCont -> AddPost();
             }
             
-            //TODO: could benefit from only running when on the index page.
+            //BUGG REPORT: If you press F5, no images are loaded.
             //if the user is logged in, all the posts are set and displayed
             if($this -> sessionManager -> getLoggedInSession()){
                 $this -> appV -> setAllPosts($this -> PostCont -> getAllPosts());
@@ -64,5 +69,23 @@ class MasterController{
             $this -> loginView -> UnHandeldException();
            
         }
+        
+        //displays html
+        self::DisplayView();
+    }
+    
+    
+    private function DisplayView(){
+        $isVerificationAttempt = $this -> verifyView -> isVerificationAttempt();
+        if($isVerificationAttempt){
+            $this -> registerCont -> VerifyAccount($this -> verifyView -> getUrlRequestEmail(), 
+                                                   $this -> verifyView -> getUrlRequestHash());
+        }
+        //renders out the html
+        $this -> layoutView -> render($this -> sessionManager -> getLoggedInSession(), 
+                                      $this -> loginView, 
+                                      $this -> registerView, 
+                                      $isVerificationAttempt, 
+                                      $this -> verifyView);
     }
 }

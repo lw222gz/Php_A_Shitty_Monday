@@ -8,9 +8,12 @@ class RegisterView{
     private static $PasswordCheckID = "RegisterView::PasswordRepeat";
     private static $messageID = "RegisterView::Message";
     private static $DisplayNameID = "RegisterView::DisplayName";
+    private static $EmailID = "RegisterView:EmailID";
+    
     
     private $message;
     private $saveUserName;
+    private $saveEmail;
     private $saveDisplayName;
     
     
@@ -27,6 +30,9 @@ class RegisterView{
 					
 					<label for="' . self::$DisplayNameID . '">Display name, this is the name shown to other users(max 25 characters):</label>
 					<input type="text" id="' . self::$DisplayNameID . '" name="' . self::$DisplayNameID . '" value="' . $this -> saveDisplayName . '" maxlength="25"/><br/>
+					
+					<label for="' . self::$EmailID . '">Email: </label>
+					<input type="text" id="' . self::$EmailID . '" name="' . self::$EmailID . '" value="' . $this -> saveEmail . '" maxlength="254"/><br/>
 					
 					<label for="' . self::$PasswordID . '">Password :</label>
 					<input type="password" id="' . self::$PasswordID . '" name="' . self::$PasswordID . '" /><br/>
@@ -55,6 +61,14 @@ class RegisterView{
         if(isset($_POST[self::$DisplayNameID])){
             $this -> saveDisplayName = trim($_POST[self::$DisplayNameID]);
             return $this -> saveDisplayName;
+        }
+        return null;
+    }
+    
+    //returns input email
+    public function getRequestEmail(){
+        if(isset($_POST[self::$EmailID])){
+            return trim($_POST[self::$EmailID]);
         }
         return null;
     }

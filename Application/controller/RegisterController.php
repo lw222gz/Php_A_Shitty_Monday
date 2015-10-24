@@ -17,11 +17,17 @@ class RegisterController{
         $this -> registerModel -> Register($RegisterUserName, 
                                             $this -> registerView -> getRequestDisplayName(), 
                                             $this -> registerView -> getRequestPassword(), 
-                                            $this -> registerView -> getRequestPasswordCheck());
+                                            $this -> registerView -> getRequestPasswordCheck(),
+                                            $this -> registerView -> getRequestEmail());
+        
         
         $this -> sessionManager -> setNewUserSession($RegisterUserName);
         
         //redirects user to index page
         header("Location: ?");
+    }
+    
+    public function VerifyAccount($email, $hash){
+        $this -> registerModel -> VerifyAccount($email, $hash);
     }
 }

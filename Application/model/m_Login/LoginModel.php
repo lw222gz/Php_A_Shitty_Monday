@@ -39,12 +39,16 @@ class LoginModel {
         //Otherwise it's the origninal login and the user credentials will be checked.
         foreach ($RegisterdUsers as $Ruser){
             if($UserN == $Ruser -> getUserName()){
+                
                 if(sha1(Settings::$Salt.$UserN.$Pass) == $Ruser -> getHasedPassword()){
                     
+                    if($Ruser -> getAccountStatus() == "false"){
+                        throw new LoginModelException("You account has not yet been activated, please activate it through a link sent to your email.");
+                    }
                     //sets the user display name is set for a welcome message aswell as usage when making a post
                     $this -> sm -> setUserNameSession($Ruser -> getDisplayName());
 
-                    $this -> sm -> setLoggedInSession(true);
+                    $this -> sm -> setLoggedInSessionTrue();
                     break;
                 }
             }
@@ -63,9 +67,8 @@ class LoginModel {
             throw new LoginModelException();
         }
         
-        //$this -> sm -> setUserNameSession("");
         //Otherwise the person just logged out and the bye bye message will be shown.
-        $this -> sm -> setLoggedInSession(false);
+        $this -> sm -> setLoggedInSessionFalse();
     }
 }
 

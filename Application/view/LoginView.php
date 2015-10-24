@@ -40,7 +40,7 @@ class LoginView {
 		//if a new user was just registerd, their name is set to defualt aswell as a new StatusMessage
 		if($this -> sm -> isNewUserSessionSet()){
 	        $this -> SaveUserName = $this -> sm -> getNewUserSession();
-	        $this -> StatusMessage = "Registered new user.";
+	        $this -> StatusMessage = "Registered new user. Please validate your email to login.";
         }
 		
 		//Sets the current status message
