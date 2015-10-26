@@ -4,7 +4,7 @@
 class LayoutView {
   
   //echos out all of the html
-  public function render($isLoggedIn, LoginView $v, $rv, $isVerificationAttempt, $VerifyView) {
+  public function render($isLoggedIn, $loginView, $registerView, $isVerificationAttempt, $VerifyView) {
       $html = '<!DOCTYPE html>
       <html>
         <head>
@@ -26,10 +26,10 @@ class LayoutView {
           <div class="container">';
           
           if (!isset($_GET["register"])){
-              $html .= $v->response();
+              $html .= $loginView->response();
           }
           else{
-            $html .= $rv -> RegisterLayout();
+            $html .= $registerView -> RegisterLayout();
           }
           $html .= '</div>';
         }

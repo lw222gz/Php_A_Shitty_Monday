@@ -5,18 +5,18 @@
 class ApplicationView{
     
     private $PostView;
-    private $sm; //session manager
+    private $sessionManager; 
     
     private $Posts = array();
     
-    public function __construct($PostView, $sm){
+    public function __construct($PostView, $sessionManager){
         $this -> PostView = $PostView;
-        $this -> sm = $sm;
+        $this -> sessionManager = $sessionManager;
     }
     
     //generates the main html for the application when logged in.
     public function GetAppView(){
-        $ret = '<h2>WELCOME ' . $this -> sm -> getUserNameSession() . ' TO A SHITTY MONDAY!</h2> 
+        $ret = '<h2>WELCOME ' . $this -> sessionManager -> getUserNameSession() . ' TO A SHITTY MONDAY!</h2> 
                 <h4>Here you can post your painful monday stories to see if you actually got the worst one.</h4>
                 
                 ' . self::getHTML() . '';

@@ -72,7 +72,7 @@ class SessionManager {
         return false;
     }
     
-    
+    //sets diffrent values for the verifysession
     public function setVerifySessionFail(){
         $_SESSION[self::$VerifySessionID] = EnumStatus::$failVerification;
     }
@@ -82,6 +82,7 @@ class SessionManager {
     public function setVerifySessionAlreadyActive(){
         $_SESSION[self::$VerifySessionID] = EnumStatus::$alreadyActiveVerification;
     }
+    //returns verifysession
     public function getVerifySession(){
         return $_SESSION[self::$VerifySessionID];
     }

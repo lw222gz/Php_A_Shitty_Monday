@@ -12,21 +12,17 @@ class LoginView {
 	
 	//Varibel to set the username input value, if $_POST[self::$name] is used an Error notice is given at the first run of the page.
 	private $SaveUserName = '';
-	
 	private $StatusMessage = '';
 	
 	
-	//refrence object to the class LoginModel, only used as Read-Only
-	private $lm;
 	//refrence object to the appView
 	private $AppV;
 	//session manipulator
-	private $sm;
+	private $sessionManager;
 
-	public function __construct($lm, $AppV, $sm){
-		$this -> lm = $lm;
+	public function __construct($AppV, $sessionManager){
 		$this -> AppV = $AppV;
-		$this -> sm = $sm;
+		$this -> sessionManager = $sessionManager;
 	}
 
 	/**
@@ -38,16 +34,17 @@ class LoginView {
 	 */
 	public function response() {
 		//if a new user was just registerd, their name is set to defualt aswell as a new StatusMessage
-		if($this -> sm -> isNewUserSessionSet()){
-	        $this -> SaveUserName = $this -> sm -> getNewUserSession();
-	        $this -> StatusMessage = "Registered new user. Please validate your email to login.";
+		if($this -> sessionManager -> isNewUserSessionSet()){
+	        $this -> SaveUserName = $this -> sessionManager -> getNewUserSession();
+	        $this -> StatusMessage = "Registered new user. Please validate your email to login. <br/>
+	        						  You can do this by clicking the link you got in your email. If you just registerd please wait a few minutes for the email to be sent.";
         }
 		
 		//Sets the current status message
 		$message = $this -> StatusMessage;
 
 		//If logged in only the logout HTML is shown
-		if($this -> sm -> getLoggedInSession())
+		if($this -> sessionManager -> getLoggedInSession())
 		{
 			$response = $this->generateLogoutButtonHTML($message);
 		}
@@ -137,6 +134,9 @@ class LoginView {
 	
 	//gets the message the error threw and sets it to the status message
 	public function setStatusMessage($e) {
+		if(strpos($e -> getMessage(), "not contain HTML tags.")){
+			$this -> SaveUserName = strip_tags($this -> SaveUserName);
+		}
 		$this -> StatusMessage = $e -> getMessage();
 	}
 	

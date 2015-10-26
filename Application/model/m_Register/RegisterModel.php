@@ -36,7 +36,7 @@ class RegisterModel {
                 ----------------------------
                 
                 Please verify your email by clicking the link below:
-                http://php-a-shitty-monday-lw222gz-1-1.c9.io/Application/model/verify.php?".EnumStatus::$Email."=".$Email."&".EnumStatus::$Hash."=".$RegisterHash."
+                ".Settings::$url.EnumStatus::$Email."=".$Email."&".EnumStatus::$Hash."=".$RegisterHash."
                 ";
                 
                 
@@ -67,7 +67,9 @@ class RegisterModel {
         if(!filter_var($Email, FILTER_VALIDATE_EMAIL)){
             throw new RegisterModelException("The email was not considerd valid.");
         }
-        
+        if(preg_match('/\s/',$Username) || preg_match('/\s/',$Password)){
+            throw new RegisterModelException("Login name or passwords may NOT contain whitespaces");
+        }
         //character validation
         if($DisplayName != strip_tags($DisplayName) || $Username != strip_tags($Username) || $Password != strip_tags($Password)){
             throw new RegisterModelException("Name or passwords are not allowed to contain HTML-tags");

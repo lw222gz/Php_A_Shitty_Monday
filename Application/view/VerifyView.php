@@ -44,4 +44,4 @@ class VerifyView{
     }
 }
 
-//http://php-a-shitty-monday-lw222gz-1-1.c9.io/Application/?email=lucas.94wik@gmail.com&hash=11b9842e0a271ff252c1903e7132cd68
+//http://php-a-shitty-monday-lw222gz-1-1.c9.io/Application/?email=Link.Zelda@gmail.com&hash=1ff8a7b5dc7a7d1f0ed65aaa29c04b1e

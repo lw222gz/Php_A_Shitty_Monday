@@ -75,10 +75,10 @@ class UserDAL {
             mysqli_close($conn);
             return false;
         }
-       
+        $row = $result->fetch_assoc();
         //makes sure a match is found, otherwise it could be a random occurance
         if($result -> num_rows > 0){
-            if($result->fetch_assoc()["AccountActive"] == "false"){
+            if($row ["AccountActive"] == "false"){
                 //activates the account
                 $query = "UPDATE `Users` SET `AccountActive`='true' WHERE `HashedEmail`='".sha1(Settings::$Salt.$conn->real_escape_string($email))."' AND `RegisterHash`='".$conn -> real_escape_string($hash)."' AND `AccountActive`='false'";
                 

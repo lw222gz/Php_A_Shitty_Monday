@@ -25,16 +25,16 @@ class RegisterView{
 					<legend>Register - enter the fields below</legend>
 					<p id="' . self::$messageID . '">' . $this -> message . '</p>
 					
-					<label for="' . self::$UserNameID . '">Username(max 25 characters):</label>
+					<label for="' . self::$UserNameID . '">Username(max 25 characters, white spaces not allowed):</label>
 					<input type="text" id="' . self::$UserNameID . '" name="' . self::$UserNameID . '" value="' . $this -> saveUserName . '" maxlength="25"/><br/>
 					
-					<label for="' . self::$DisplayNameID . '">Display name, this is the name shown to other users(max 25 characters):</label>
+					<label for="' . self::$DisplayNameID . '">Display name, this is the name shown to other users(max 25 characters, white spaces allowed):</label>
 					<input type="text" id="' . self::$DisplayNameID . '" name="' . self::$DisplayNameID . '" value="' . $this -> saveDisplayName . '" maxlength="25"/><br/>
 					
 					<label for="' . self::$EmailID . '">Email: </label>
 					<input type="text" id="' . self::$EmailID . '" name="' . self::$EmailID . '" value="' . $this -> saveEmail . '" maxlength="254"/><br/>
 					
-					<label for="' . self::$PasswordID . '">Password :</label>
+					<label for="' . self::$PasswordID . '">Password(white spaces not allowed) :</label>
 					<input type="password" id="' . self::$PasswordID . '" name="' . self::$PasswordID . '" /><br/>
 					
 					<label for="' . self::$PasswordCheckID . '">Re-type Password :</label>
@@ -50,8 +50,10 @@ class RegisterView{
     //returns input usernamer
     public function getRequestUserName(){
         if (isset($_POST[self::$UserNameID])){
-            $this -> saveUserName = trim($_POST[self::$UserNameID]);
-            return $this -> saveUserName;
+            //saves a correct version of the name(no white spaces in the string) to display ventual errors by user
+            $this -> saveUserName = str_replace(' ', '', $_POST[self::$UserNameID]); 
+            //returns a trimed version to be validated in the model so it can check if the user has any whitespaces and if so throw an error.
+            return trim($_POST[self::$UserNameID]);
         }
         return null;
     }
@@ -92,7 +94,7 @@ class RegisterView{
     //returns true if user has pressed register
     public function hasPressedRegister(){
         if(isset($_POST[self::$RegisterID])){
-            return trim($_POST[self::$RegisterID]);
+            return true;
         }
         return null;
     }

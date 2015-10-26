@@ -3,21 +3,21 @@
 
 class LoginModel {
     
-    private static $UserDAL;
-    private $sm; //session handler
+    private $UserDAL;
+    private $sessionManager; //session handler
     
     
     
-    public function __construct($DAL, $sm){
-        self::$UserDAL = $DAL;
-        $this -> sm = $sm;
+    public function __construct($DAL, $sessionManager){
+        $this -> UserDAL = $DAL;
+        $this -> sessionManager = $sessionManager;
     }
     
     //Takes the given data and throws a proper Exception if anything is wrong, 
     //otherwise returns @boolean
     public function CheckLoginInfo($UserN, $Pass) {
         
-        $RegisterdUsers = self::$UserDAL -> getUserData();
+        $RegisterdUsers = $this -> UserDAL -> getUserData();
         //if $RegisterdUsers is false then the .bin is empty
         if(!$RegisterdUsers){
             throw new LoginModelException("Error occured when trying to loggin.");
@@ -31,8 +31,11 @@ class LoginModel {
         else if(empty($Pass)){
             throw new LoginModelException('Password is missing');
         }
+        if($UserN != strip_tags($UserN) || $Pass != strip_tags($Pass)){
+            throw new LoginModelException("The input may not contain HTML tags.");
+        }
         //if the session is true then it's a repost and the Welcome message is removed
-        else if($this -> sm -> getLoggedInSession()){
+        else if($this -> sessionManager -> getLoggedInSession()){
                 throw new LoginModelException();
         }
         
@@ -46,14 +49,14 @@ class LoginModel {
                         throw new LoginModelException("You account has not yet been activated, please activate it through a link sent to your email.");
                     }
                     //sets the user display name is set for a welcome message aswell as usage when making a post
-                    $this -> sm -> setUserNameSession($Ruser -> getDisplayName());
+                    $this -> sessionManager -> setUserNameSession($Ruser -> getDisplayName());
 
-                    $this -> sm -> setLoggedInSessionTrue();
+                    $this -> sessionManager -> setLoggedInSessionTrue();
                     break;
                 }
             }
         }
-        if(!$this -> sm -> getLoggedInSession()){
+        if(!$this -> sessionManager -> getLoggedInSession()){
             throw new LoginModelException('Wrong name or password');
         }
     }
@@ -63,12 +66,12 @@ class LoginModel {
     public function LogOut(){
         //If this session allready exsists and it's value is false, then it's a repost, 
         //if it's a repost I throw an empty error to remove the StatusMessage
-        if (!$this -> sm -> getLoggedInSession()){
+        if (!$this -> sessionManager -> getLoggedInSession()){
             throw new LoginModelException();
         }
         
         //Otherwise the person just logged out and the bye bye message will be shown.
-        $this -> sm -> setLoggedInSessionFalse();
+        $this -> sessionManager -> setLoggedInSessionFalse();
     }
 }
 

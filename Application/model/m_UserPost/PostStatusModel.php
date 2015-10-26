@@ -55,19 +55,23 @@ class PostStatusModel{
         
         //if the file size is 0 then the user did not upload a file, so filePath gets value null to put in the DB as filePath
         $this -> filePath = null;
-        //if the filesize is lager than 0 then a file has been uploaded, otherwise 
+        //if the filesize is larger than 0 then a file has been uploaded, otherwise 
+        var_dump($img);
         if($img['size'] != 0){
             
             //These are all possible file types for images that mime_content_type can return
             //source: http://php.net/manual/en/function.mime-content-type.php
             //if file is not ONE of these, the file could be harmful, exampel a script file.
-            if(mime_content_type($img['tmp_name']) == "image/jpeg" ||
+            /*if(mime_content_type($img['tmp_name']) == "image/jpeg" ||
                 mime_content_type($img['tmp_name']) == "image/png" ||
                 mime_content_type($img['tmp_name']) == "image/gif" ||
                 mime_content_type($img['tmp_name']) == "image/bmp" ||
                 mime_content_type($img['tmp_name']) == "image/vnd.microsoft.icon" ||
                 mime_content_type($img['tmp_name']) == "image/tiff" ||
-                mime_content_type($img['tmp_name']) == "image/svg+xml"){
+                mime_content_type($img['tmp_name']) == "image/svg+xml"){*/
+                
+            //if getimagesize returns 0 then it's not an image, and 0 == false
+            if(getimagesize($img['tmp_name'])){
                 
                 
                 $temp = explode('.', $img['name']);
@@ -115,7 +119,7 @@ class PostStatusModel{
     }
     
     
-    
+    //TODO: reqrite this more effectivly
     //removes all images that dont have a path in the Posts array
     public function deleteOldPictures($Posts){
         foreach (scandir(Settings::$uploadDir) as $ExistingFileName){

@@ -35,33 +35,34 @@ require_once('model/DAL/UserDAL.php');
 //-change url in Settings script.
 //-change header location in Logincontroller and Postcontroller.
 //-change the url in the email sent
+//-DB settings
 
 //MAKE SURE ERRORS ARE SHOWN... MIGHT WANT TO TURN THIS OFF ON A PUBLIC SERVER
 error_reporting(E_ALL);
 ini_set('display_errors', 'On');
 
 //CREATE OBJECTS OF THE MODELS/ VIEWS/ Controllers
-$sm = new SessionManager();
+$sessionManager = new SessionManager();
 
 $DALb = new DALBase();
-$UDAL = new UserDAL($DALb, $sm);
+$UDAL = new UserDAL($DALb, $sessionManager);
 $pDAL = new PostsDAL($DALb);
 
-$psM = new PostStatusModel($pDAL);
-$lm = new LoginModel($UDAL, $sm);
-$rm = new RegisterModel($UDAL);
+$postStatusModel = new PostStatusModel($pDAL);
+$loginModel = new LoginModel($UDAL, $sessionManager);
+$registerModel = new RegisterModel($UDAL);
 
 $PostView = new PostStatusView();
-$AppV = new ApplicationView($PostView, $sm);
-$v = new LoginView($lm, $AppV, $sm);
-$rv = new RegisterView();
-$lv = new LayoutView();
-$verifyView = new VerifyView($sm);
+$AppV = new ApplicationView($PostView, $sessionManager);
+$loginView = new LoginView($AppV, $sessionManager);
+$registerView = new RegisterView();
+$layoutView = new LayoutView();
+$verifyView = new VerifyView($sessionManager);
 
-$registerCont = new RegisterController($rv, $rm, $sm);
-$loginCont = new LoginController($v, $lm);
-$PostCont = new PostController($PostView, $psM, $sm);
-$MC = new MasterController($PostCont, $loginCont, $registerCont, $v, $rv, $PostView, $sm, $AppV, $verifyView, $lv);
+$registerCont = new RegisterController($registerView, $registerModel, $sessionManager);
+$loginCont = new LoginController($loginView, $loginModel);
+$PostCont = new PostController($PostView, $postStatusModel, $sessionManager);
+$MC = new MasterController($PostCont, $loginCont, $registerCont, $loginView, $registerView, $PostView, $sessionManager, $AppV, $verifyView, $layoutView);
 
 //runs logic then renders out the HTML by calling on model scripts / view scripts
 $MC -> init();
