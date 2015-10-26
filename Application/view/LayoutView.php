@@ -4,7 +4,7 @@
 class LayoutView {
   
   //echos out all of the html
-  public function render($isLoggedIn, $loginView, $registerView, $isVerificationAttempt, $VerifyView) {
+  public function render($isLoggedIn, $loginView, $registerView, $isVerificationAttempt, $hasJustRegisterd, $VerifyView) {
       $html = '<!DOCTYPE html>
       <html>
         <head>
@@ -14,7 +14,8 @@ class LayoutView {
         </head>
         <body>';
         
-        //if a verification attempt is being made a view displaying that result will be shown.
+        
+
         if($isVerificationAttempt){
           $html .= $VerifyView -> response();
         }

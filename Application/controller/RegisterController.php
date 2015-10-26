@@ -13,15 +13,15 @@ class RegisterController{
     
     public function RegisterNewUser(){
         //validates input data and registers a user.
-        $RegisterUserName = $this -> registerView -> getRequestUserName();
-        $this -> registerModel -> Register($RegisterUserName, 
-                                            $this -> registerView -> getRequestDisplayName(), 
-                                            $this -> registerView -> getRequestPassword(), 
-                                            $this -> registerView -> getRequestPasswordCheck(),
-                                            $this -> registerView -> getRequestEmail());
         
+        $this -> registerModel -> Register($this -> registerView -> getRequestUserName(), 
+                                           $this -> registerView -> getRequestDisplayName(), 
+                                           $this -> registerView -> getRequestPassword(), 
+                                           $this -> registerView -> getRequestPasswordCheck(),
+                                           $this -> registerView -> getRequestEmail());
         
-        $this -> sessionManager -> setNewUserSession($RegisterUserName);
+        //sets the newlyregisterduser session to true to display a message in the view after the redirect
+        $this -> sessionManager -> setNewlyRegisterdUserTrue();
         
         //redirects user to index page
         header("Location: ?");

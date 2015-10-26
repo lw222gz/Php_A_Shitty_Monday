@@ -86,6 +86,7 @@ class MasterController{
                                       $this -> loginView, 
                                       $this -> registerView, 
                                       $isVerificationAttempt, 
+                                      $this -> sessionManager -> getNewlyRegisterdUserStatus(),
                                       $this -> verifyView);
     }
 }

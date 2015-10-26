@@ -33,13 +33,12 @@ class LoginView {
 	 * @return  void BUT writes to standard output and cookies!
 	 */
 	public function response() {
-		//if a new user was just registerd, their name is set to defualt aswell as a new StatusMessage
-		if($this -> sessionManager -> isNewUserSessionSet()){
-	        $this -> SaveUserName = $this -> sessionManager -> getNewUserSession();
-	        $this -> StatusMessage = "Registered new user. Please validate your email to login. <br/>
-	        						  You can do this by clicking the link you got in your email. If you just registerd please wait a few minutes for the email to be sent.";
-        }
-		
+		if($this -> sessionManager -> getNewlyRegisterdUserStatus()){
+			$this -> sessionManager -> setNewlyRegisterdUserFalse();
+			return "Thanks for registering on our site! A mail has been sent to the give mail address that you will receive in a couple of minutes.<br/> 
+	                Please press the link in that mail to activate your account.<br/>
+	                <a href=?>Return to homepage.</a>";
+		}
 		//Sets the current status message
 		$message = $this -> StatusMessage;
 

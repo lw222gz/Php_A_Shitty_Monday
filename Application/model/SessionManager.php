@@ -4,7 +4,7 @@ class SessionManager {
     
     private static $LoggedInUserID = "SessionHandler::LoggedInUser";
     private static $IsLoggedInID = "SessionHandler::IsLoggedIn";
-    private static $newUserID = "SessionHandler::newUserName";
+    private static $NewlyRegisterdUser = "SessionHandler::NewlyRegisterUser";
     private static $VerifySessionID = "SessionHandler::verificationStatus";
     
 
@@ -19,7 +19,9 @@ class SessionManager {
         if(!isset($_SESSION[self::$VerifySessionID])){
             self::setVerifySessionFail();
         }
-        //$_SESSION[$newUserID] dont need to be set to default because if it gets set, then it's used, when it later on used it's re-unset.
+        if(!isset($_SESSION[self::$NewlyRegisterdUser])){
+            //self::setNewlyRegisterdUserFalse();
+        }
     }
     
     //return value of $UserName session
@@ -42,34 +44,25 @@ class SessionManager {
     
     //sets the value of $IsLoggedIn session 
     public function setLoggedInSessionFalse(){
-        $_SESSION[self::$IsLoggedInID] = EnumStatus::$boolFalse;
+        $_SESSION[self::$IsLoggedInID] = false;;
     }
     public function setLoggedInSessionTrue(){
-        $_SESSION[self::$IsLoggedInID] = EnumStatus::$boolTrue;
+        $_SESSION[self::$IsLoggedInID] = true;
     }
     
-    //returns the value of $newUsedID session and unsets the value.
-    public function getNewUserSession(){
-        //when this is used it's unset directly after to make sure that a Username isent stored somewhere.
-        $Uname = $_SESSION[self::$newUserID];
-        unset($_SESSION[self::$newUserID]);
-        return $Uname;
+    //boolean indicating if a user was just registerd.
+    public function getNewlyRegisterdUserStatus(){
+        return $_SESSION[self::$NewlyRegisterdUser];
     }
     
-    //sets a value to session $newUserID
-    public function setNewUserSession($value){
-        if(!is_string($value)){
-            throw new Exception("Value is not valid.");
-        }
-        $_SESSION[self::$newUserID] = $value;
+    //sets a value to session $NewlyRegisterdUser
+    public function setNewlyRegisterdUserTrue(){
+        $_SESSION[self::$NewlyRegisterdUser] = true;
     }
     
     //returns boolean, true if newUserSession has a value else false
-    public function isNewUserSessionSet(){
-        if(isset($_SESSION[self::$newUserID])){
-            return true;
-        }
-        return false;
+    public function setNewlyRegisterdUserFalse(){
+        $_SESSION[self::$NewlyRegisterdUser] = false;
     }
     
     //sets diffrent values for the verifysession

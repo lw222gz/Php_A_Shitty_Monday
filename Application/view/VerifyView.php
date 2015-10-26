@@ -26,6 +26,7 @@ class VerifyView{
         }
     }
     
+    
     //if the url indicates a verification attempt this method returns true
     public function isVerificationAttempt(){
       if(isset($_GET[EnumStatus::$Email]) && isset($_GET[EnumStatus::$Hash])){

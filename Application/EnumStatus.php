@@ -7,6 +7,4 @@ class EnumStatus{
     static $alreadyActiveVerification = "EnumStatus::AlreadyActiveVerification";
     static $Email = 'email';
     static $Hash = 'hash';
-    static $boolTrue = true;
-    static $boolFalse = false;
 }
