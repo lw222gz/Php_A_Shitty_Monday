@@ -24,7 +24,7 @@ class RegisterController{
         $this -> sessionManager -> setNewlyRegisterdUserTrue();
         
         //redirects user to index page
-        header("Location: ?");
+        header("Location: ".Settings::$url."");
     }
     
     public function VerifyAccount($email, $hash){

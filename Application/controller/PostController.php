@@ -17,7 +17,7 @@ class PostController {
                                                 $this -> postStatusView -> getStory(), 
                                                 $this -> postStatusView -> getImg());
         
-        header("Location: ?");
+        header("Location: ".Settings::$url."");
     }
     
     public function getAllPosts(){
