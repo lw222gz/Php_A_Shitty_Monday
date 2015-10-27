@@ -23,8 +23,6 @@ class ApplicationView{
         return $ret;
     }
     
-    //$actual_link = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-    
     //returns html of all posts in the $Posts array
     private function getAllPosts(){
         $ret = "";
@@ -32,10 +30,8 @@ class ApplicationView{
         foreach ($this -> Posts as $post){
             $ret .= "<fieldset><p><b class='StoryTitle'>" . strtoupper($post -> getTitle()) . "</b><br/>Written by: ". $post -> getCreator(). " At date: " . $post -> getDateCreated() . "
             <br/><h2>Story:</h2> " . str_replace("\n", "<br/>", $post -> getStory()) . "<br/>";
+            //if the post has an image path it gets an img tag to the post
             if($post -> getImgPath() != null){
-                //TODO: change on live verson.
-                
-                //$ret .= "<img src=https://php-a-shitty-monday-lw222gz-1-1.c9.io/Application/". $post->getImgPath() . ">";
                 $ret .= "<img src=" . Settings::$url.$post->getImgPath() ." >";
             }
             

@@ -41,7 +41,7 @@ class PostStatusModel{
     public function ValidatePostData($message, $title, $img){
         
         if($message != strip_tags($message) || $title != strip_tags($title)){
-            throw new PostStoryError("The text may not contain HTML-tags.");
+            throw new PostStoryError(EnumStatus::$InvalidCharactersError);
         }
         if(strlen($message) < 5){
             if(strlen($title) < 3){

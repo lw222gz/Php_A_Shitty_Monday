@@ -133,15 +133,10 @@ class LoginView {
 	
 	//gets the message the error threw and sets it to the status message
 	public function setStatusMessage($e) {
-		if(strpos($e -> getMessage(), "not contain HTML tags.")){
+		if($e -> getMessage() == EnumStatus::$InvalidCharactersError){
 			$this -> SaveUserName = strip_tags($this -> SaveUserName);
 		}
 		$this -> StatusMessage = $e -> getMessage();
-	}
-	
-	//Sets the Welcome message when the user just logged in
-	public function JustLoggedIn(){
-		$this -> StatusMessage = 'Welcome';
 	}
 	
 	//Sets the Bye bye! message when the user just logged out
@@ -150,7 +145,7 @@ class LoginView {
 	}
 	
 	//sets a message if an unhandeld exception was thrown.
-	public function UnHandeldException(){
+	public function UnhandeldException(){
 		$this -> StatusMessage = "An unhandeld exception was thrown. Please infrom...";
 	}
 }

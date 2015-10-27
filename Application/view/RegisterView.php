@@ -103,15 +103,16 @@ class RegisterView{
     //sets an error message when an exception was thrown
     public function setErrorMessage($e){
         //checks if error message is cause due to invalid characters
-        if(strpos($e -> getMessage(), " contains invalid characters.")){
+        if($e -> getMessage() == EnumStatus::$InvalidCharactersError){
             //if so those are removed.
+            $this -> saveDisplayName = strip_tags($this -> saveDisplayName);
             $this -> saveUserName = strip_tags($this -> saveUserName);
         }
         $this -> message = $e -> getMessage();
     }
     
     //sets message if an unhandelsException was thrown
-    public function UnHandeldException(){
+    public function UnhandeldException(){
 		$this -> message = "An unhandeld exception was thrown. Please infrom...";
 	}
 }

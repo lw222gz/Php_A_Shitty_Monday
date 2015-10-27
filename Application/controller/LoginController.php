@@ -18,9 +18,6 @@ class LoginController {
     //tries to log in the user
     public function LogIn(){
         $this -> loginModel -> CheckLoginInfo($this -> loginView -> getRequestUserName(), $this -> loginView -> getRequestUserPassword());
-
-        //On the original log in, it shows the Welcome message
-        $this -> loginView -> JustLoggedIn();
     }
     
     //Logs out the user

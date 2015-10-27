@@ -19,7 +19,7 @@ class RegisterModel {
             //hashing the password before going to the DAL just to make sure no bugg in the DAL will cause an unhased password to be stored.
             //using the default salt+username to make sure that 2 people with diffrent usernames but same passwords dont get the same hash.
             //Also hasing the email since I dont use it for sending any emails more than the verification one.
-            if(!$this -> userDAL -> AddUser($Username, $DisplayName, sha1(Settings::$Salt.$Username.$Password), sha1(Settings::$Salt.$Email), $RegisterHash)){
+            if(!$this -> userDAL -> AddUser($Username, $DisplayName, sha1(Settings::$Salt.$Username.$Password), sha1(Settings::$Salt.strtolower($Email)), $RegisterHash)){
                 throw new RegisterModelException("An error occured when trying to add you to the database, please inform...");
             }
             else{
@@ -36,7 +36,7 @@ class RegisterModel {
                 ----------------------------
                 
                 Please verify your email by clicking the link below:
-                ".Settings::$url.EnumStatus::$Email."=".$Email."&".EnumStatus::$Hash."=".$RegisterHash."
+                ".Settings::$url."?".EnumStatus::$EmailURLText."=".$Email."&".EnumStatus::$HashURLText."=".$RegisterHash."
                 ";
                 
                 
@@ -60,6 +60,10 @@ class RegisterModel {
                 if($Username == $Ruser -> getUserName()){
                     throw new RegisterModelException("User exists, pick another username.");
                 }
+                //im storing the hash of an emil in lower case so an email cant be registerd twice.
+                if(sha1(Settings::$Salt.strtolower($Email)) == $Ruser -> getHashedEmail()){
+                    throw new RegisterModelException("That email is allready registerd.");
+                }
             }
         }
         
@@ -72,7 +76,7 @@ class RegisterModel {
         }
         //character validation
         if($DisplayName != strip_tags($DisplayName) || $Username != strip_tags($Username) || $Password != strip_tags($Password)){
-            throw new RegisterModelException("Name or passwords are not allowed to contain HTML-tags");
+            throw new RegisterModelException(EnumStatus::$InvalidCharactersError);
         }
         if($Password != $PasswordCheck){
             throw new RegisterModelException("Passwords do not match.");
@@ -101,8 +105,7 @@ class RegisterModel {
     
     //verifies an account by checking the given mail and hash, if they match in the DB then the account is activated.
     public function VerifyAccount($email, $hash){
-        if(!$this -> userDAL -> activateAccount($email, $hash)){
-            //set session["successfulreg"] to false
+        if(!$this -> userDAL -> activateAccount(sha1(Settings::$Salt.strtolower($email)), $hash)){
             throw new RegisterModelException("And error occured when trying to activate your account, please inform...");
         }
     }

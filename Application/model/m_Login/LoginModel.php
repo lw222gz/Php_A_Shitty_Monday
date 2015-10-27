@@ -20,23 +20,22 @@ class LoginModel {
         $RegisterdUsers = $this -> UserDAL -> getUserData();
         //if $RegisterdUsers is false then the .bin is empty
         if(!$RegisterdUsers){
+            
             throw new LoginModelException("Error occured when trying to loggin.");
         }
-        
+
         //When an Exception is thrown, the controller will pick that exception up, 
         //pass it on to the view that uses the message in the exception to present it to the user.
         if(empty($UserN)){
             throw new LoginModelException('Username is missing');
+            
         }
+        
         else if(empty($Pass)){
             throw new LoginModelException('Password is missing');
         }
         if($UserN != strip_tags($UserN) || $Pass != strip_tags($Pass)){
-            throw new LoginModelException("The input may not contain HTML tags.");
-        }
-        //if the session is true then it's a repost and the Welcome message is removed
-        else if($this -> sessionManager -> getLoggedInSession()){
-                throw new LoginModelException();
+            throw new LoginModelException(EnumStatus::$InvalidCharactersError);
         }
         
         //Otherwise it's the origninal login and the user credentials will be checked.

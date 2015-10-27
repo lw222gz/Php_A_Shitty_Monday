@@ -27,7 +27,7 @@ class PostStatusView {
 					<textarea cols="40" rows ="5" type="text" class="PostTextBlock" id="' . self::$Story . '" name="' . self::$Story . '" maxlength="1550">' . $this -> saveStory . '</textarea> 
 					
 					<label>Select image to upload(optional): </label>
-                    <input type="file" name="' . self::$FileID . '" id="fileToUpload">
+                    <input type="file" accept="image/*" name="' . self::$FileID . '" id="fileToUpload">
                     
 					<input type="submit" name="' . self::$Post . '" value="Upload" />
 				</fieldset>
@@ -37,7 +37,7 @@ class PostStatusView {
     //sets any possible error messages
     public function setErrorMessage($e){
         $mess = $e -> getMessage();
-        if(strpos($mess, "may not contain HTML-tags")){
+        if($mess == EnumStatus::$InvalidCharactersError){
             $this -> saveStory = strip_tags($this -> saveStory);
             $this -> saveTitle = strip_tags($this -> saveTitle);
         }
@@ -75,7 +75,7 @@ class PostStatusView {
     }
     
     //sets a message if an unhandeld exception was thrown.
-    public function UnHandeldException(){
+    public function UnhandeldException(){
 		$this -> errorMessage = "An unhandeld exception was thrown. Please infrom...";
 	}
 }

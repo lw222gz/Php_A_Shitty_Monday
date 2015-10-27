@@ -47,11 +47,11 @@ class MasterController{
                 $this -> PostCont -> AddPost();
             }
             
-            //BUGG REPORT: If you press F5, no images are loaded.
             //if the user is logged in, all the posts are set and displayed
             if($this -> sessionManager -> getLoggedInSession()){
                 $this -> appV -> setAllPosts($this -> PostCont -> getAllPosts());
             }
+            
         }
         catch (LoginModelException $e){
             $this -> loginView -> setStatusMessage($e);
@@ -64,9 +64,9 @@ class MasterController{
         }
         catch (Exception $e){
             //if an unhandeld exception was thrown then a special error message is shown.
-            $this -> postStatusView -> UnHandeldException();
-            $this -> registerView -> UnHandeldException();
-            $this -> loginView -> UnHandeldException();
+            $this -> postStatusView -> UnhandeldException();
+            $this -> registerView -> UnhandeldException();
+            $this -> loginView -> UnhandeldException();
            
         }
         

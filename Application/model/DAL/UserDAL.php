@@ -65,7 +65,7 @@ class UserDAL {
     public function activateAccount($email, $hash){
         $conn = $this -> DALb -> getSQLConn();
         
-        $query = "SELECT `HashedEmail`, `AccountActive`, `RegisterHash`  FROM `Users` WHERE `HashedEmail`='".sha1(Settings::$Salt.$conn->real_escape_string($email))."' AND `RegisterHash`='".$conn -> real_escape_string($hash)."'";
+        $query = "SELECT `HashedEmail`, `AccountActive`, `RegisterHash`  FROM `Users` WHERE `HashedEmail`='".$conn->real_escape_string($email)."' AND `RegisterHash`='".$conn -> real_escape_string($hash)."'";
         
         $result = $conn -> query($query);
         
@@ -80,7 +80,7 @@ class UserDAL {
         if($result -> num_rows > 0){
             if($row ["AccountActive"] == "false"){
                 //activates the account
-                $query = "UPDATE `Users` SET `AccountActive`='true' WHERE `HashedEmail`='".sha1(Settings::$Salt.$conn->real_escape_string($email))."' AND `RegisterHash`='".$conn -> real_escape_string($hash)."' AND `AccountActive`='false'";
+                $query = "UPDATE `Users` SET `AccountActive`='true' WHERE `HashedEmail`='".$conn->real_escape_string($email)."' AND `RegisterHash`='".$conn -> real_escape_string($hash)."' AND `AccountActive`='false'";
                 
                 $reuslt = $conn -> query($query);
                 //sets session to display that the account has been successfully activated.

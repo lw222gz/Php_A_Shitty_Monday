@@ -29,7 +29,7 @@ class VerifyView{
     
     //if the url indicates a verification attempt this method returns true
     public function isVerificationAttempt(){
-      if(isset($_GET[EnumStatus::$Email]) && isset($_GET[EnumStatus::$Hash])){
+      if(isset($_GET[EnumStatus::$EmailURLText]) && isset($_GET[EnumStatus::$HashURLText])){
         return true;
       }
       return false;
@@ -37,12 +37,13 @@ class VerifyView{
     
     //gets data from the url and returns it
     public function getUrlRequestEmail(){
-        return $_GET[EnumStatus::$Email];
+        return $_GET[EnumStatus::$EmailURLText];
     }
     
     public function getUrlRequestHash(){
-        return $_GET[EnumStatus::$Hash];
+        return $_GET[EnumStatus::$HashURLText];
     }
 }
 
-//http://php-a-shitty-monday-lw222gz-1-1.c9.io/Application/?email=Link.Zelda@gmail.com&hash=1ff8a7b5dc7a7d1f0ed65aaa29c04b1e
+
+//https://php-a-shitty-monday-lw222gz-1-1.c9.io/Application/email=lw222gz@student.lnu.se&hash=bbf94b34eb32268ada57a3be5062fe7d

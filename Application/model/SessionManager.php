@@ -9,7 +9,7 @@ class SessionManager {
     
 
     public function __construct(){
-        //if a session is not defined it gets a defualt value to avoid crashes.
+        //if a session is not defined it gets a defualt value to avoid errors
         if(!isset($_SESSION[self::$LoggedInUserID])){
             self::setUserNameSession("");
         }
@@ -20,7 +20,7 @@ class SessionManager {
             self::setVerifySessionFail();
         }
         if(!isset($_SESSION[self::$NewlyRegisterdUser])){
-            //self::setNewlyRegisterdUserFalse();
+            self::setNewlyRegisterdUserFalse();
         }
     }
     
@@ -44,7 +44,7 @@ class SessionManager {
     
     //sets the value of $IsLoggedIn session 
     public function setLoggedInSessionFalse(){
-        $_SESSION[self::$IsLoggedInID] = false;;
+        $_SESSION[self::$IsLoggedInID] = false;
     }
     public function setLoggedInSessionTrue(){
         $_SESSION[self::$IsLoggedInID] = true;
