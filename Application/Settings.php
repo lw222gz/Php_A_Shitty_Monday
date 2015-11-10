@@ -24,4 +24,6 @@ class Settings{
     
     static $url = "http://ashittymonday.host56.com/";
     */
+    
+    //this is a new line.
 }
