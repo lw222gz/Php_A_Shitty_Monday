@@ -26,4 +26,6 @@ class Settings{
     */
     
     //this is a new line.
+    
+    //this is another new line.
 }
