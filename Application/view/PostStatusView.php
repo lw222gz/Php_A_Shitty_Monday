@@ -56,10 +56,12 @@ class PostStatusView {
     public function getImg(){
         return $_FILES[self::$FileID];
     }
+    
     //returns the story written in the textarea
     public function getStory(){
         if(isset($_POST[self::$Story])){
-            $this -> saveStory = preg_replace('/\h+/', ' ' ,$_POST[self::$Story]);
+            //$this -> saveStory = preg_replace('/\+/', ' ' ,$_POST[self::$Story]);
+            $this -> saveStory = $_POST[self::$Story];
             return $this -> saveStory;
         }
         return null;
